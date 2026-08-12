@@ -1,8 +1,4 @@
-# sql-reviewer-skill
-
-Skill de revisión técnica de sentencias SQL. Desarrollada para la actividad
-"Ingeniería y Desarrollo de una Skill para IA".
-
+# sql-reviewer
 ## ¿Qué es esto?
 
 `sql-reviewer` no es un prompt. Es un procedimiento especificado con reglas

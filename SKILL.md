@@ -1,6 +1,11 @@
+---
+name: sql-reviewer
+description: Revisa sentencias y scripts SQL como un revisor técnico de base de datos, detectando riesgos de seguridad (SQL injection, DELETE/UPDATE sin WHERE efectivo, operaciones destructivas), rendimiento (SELECT *, falta de LIMIT, índices faltantes, tipos de datos deficientes) y convenciones (nombres poco descriptivos, uso incorrecto de NULL). Usa esta skill siempre que el usuario pida revisar, auditar, o validar SQL, o pregunte si una sentencia SQL es segura o eficiente. Cada hallazgo se clasifica en CRITICAL, HIGH, MEDIUM, LOW o INFO con la regla que lo originó.
+---
+
 # SQL Reviewer
 
-## Purpose
+## Propósito
 
 `sql-reviewer` es una skill que actúa como revisor técnico de sentencias y
 scripts SQL antes de que lleguen a un entorno de ejecución (desarrollo, QA o
@@ -13,7 +18,7 @@ La skill no reemplaza a un DBA ni a un pipeline de CI de SQL linting. Es una
 capa de revisión adicional, determinista en sus reglas y explícita en sus
 límites.
 
-## When to activate
+## Cuándo activarse
 
 Activar `sql-reviewer` cuando el input sea:
 
@@ -26,7 +31,7 @@ Activar `sql-reviewer` cuando el input sea:
 - Una solicitud explícita de "revisa este SQL", "audita esta query",
   "¿esta sentencia es segura/eficiente?".
 
-## When NOT to activate
+## Cuándo NO activarse
 
 La skill **no debe activarse**, y debe decirlo explícitamente, cuando:
 
@@ -44,7 +49,7 @@ La skill **no debe activarse**, y debe decirlo explícitamente, cuando:
   ER, normalización completa de un esquema) — eso excede el alcance de
   revisión de sentencias puntuales.
 
-## Inputs
+## Entradas
 
 | Campo | Obligatorio | Descripción |
 |---|---|---|
@@ -56,7 +61,7 @@ La skill **no debe activarse**, y debe decirlo explícitamente, cuando:
 Si `sql_text` está vacío o no contiene SQL parseable, la skill **no genera
 un análisis**: responde indicando que no hay SQL que revisar.
 
-## Procedure
+## Procedimiento
 
 La skill sigue un procedimiento fijo de 6 pasos. No se permite saltar pasos
 ni reordenarlos.
@@ -81,7 +86,7 @@ ni reordenarlos.
    severidad según "Severity levels", y generar el output en el formato de
    "Expected output".
 
-### Deterministic vs reasoning-based
+### Determinista vs. basado en razonamiento
 
 Es importante distinguir qué partes de esta skill son reglas fijas y cuáles
 dependen del razonamiento del modelo, porque se evalúa explícitamente en la
@@ -98,7 +103,7 @@ defensa:
   CRITICAL igual). Esta capa existe precisamente porque las reglas
   sintácticas por sí solas son evadibles (ver fase Red Team).
 
-## Rules
+## Reglas
 
 Las reglas completas y numeradas están en `rules/security.md`,
 `rules/performance.md` y `rules/conventions.md`. Aquí se listan solo los
@@ -133,7 +138,7 @@ NULL, tipos de datos deficientes, índices potencialmente faltantes,
 problemas de rendimiento razonables, y las reglas adicionales del equipo)
 está en los archivos de `rules/`.
 
-## Severity levels
+## Niveles de severidad
 
 | Nivel | Significado | Ejemplos |
 |---|---|---|
@@ -148,7 +153,7 @@ la severidad reportada para la sentencia en el resumen es la del hallazgo
 más alto (CRITICAL > HIGH > MEDIUM > LOW > INFO). Cada hallazgo individual
 conserva su propia severidad en el detalle.
 
-## Expected output
+## Salida esperada
 
 Para cada sentencia analizada, el output debe seguir esta estructura:
 
@@ -172,7 +177,7 @@ Si la sentencia no tiene hallazgos, se reporta explícitamente:
 `Sin hallazgos. La sentencia cumple las reglas evaluadas.` — no se inventan
 observaciones para justificar la revisión (ver "Failure handling").
 
-## Validation
+## Validación
 
 Antes de entregar el reporte, la skill verifica:
 
@@ -186,7 +191,7 @@ Antes de entregar el reporte, la skill verifica:
 - [ ] No se afirma nada sobre datos reales de la tabla (volumen de filas,
       distribución de valores) que no haya sido provisto explícitamente.
 
-## Failure handling
+## Manejo de fallos
 
 La skill **no inventa contexto** para completar un análisis. Comportamiento
 explícito ante información insuficiente:

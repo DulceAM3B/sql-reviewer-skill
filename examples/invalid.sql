@@ -1,9 +1,3 @@
--- ============================================================
--- invalid.sql
--- Sentencias con violaciones claras y múltiples, pensadas para
--- disparar varias reglas de forma evidente (no ambigua).
--- ============================================================
-
 -- SEC-01: DELETE sin WHERE (CRITICAL)
 DELETE FROM users;
 
@@ -13,8 +7,6 @@ UPDATE users SET status = 'inactive';
 SELECT * FROM orders;
 
 -- SEC-04: SQL Injection evidente por concatenación de input externo
--- (pseudocódigo representando construcción de query en aplicación)
--- query = "SELECT * FROM users WHERE email = '" + request.params.email + "'";
 
 -- SEC-03: DROP sin ninguna salvaguarda ni comentario
 DROP TABLE temp_import;

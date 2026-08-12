@@ -1,21 +1,10 @@
--- ============================================================
--- edge-cases.sql
--- Sentencias que CUMPLEN las reglas superficiales (tienen WHERE,
--- tienen LIMIT, etc.) pero siguen siendo peligrosas o incorrectas
--- al evaluar intención/impacto real. Estos son los casos que la
--- fase Red Team del enunciado explícitamente menciona.
--- ============================================================
-
 -- Caso 1: WHERE presente pero trivialmente verdadero (SEC-02)
--- "Tiene WHERE" según una regla ingenua, pero afecta el 100% de las filas.
 DELETE FROM users WHERE 1 = 1;
 
 -- Caso 2: LIMIT presente pero sin efecto práctico (PERF-02b)
--- "Tiene LIMIT" según una regla ingenua, pero el valor no acota nada real.
 SELECT * FROM users LIMIT 1000000000;
 
 -- Caso 3: WHERE con condición de baja selectividad que en la práctica
--- coincide con casi cualquier fila (SEC-05 / equivalente a SEC-02)
 UPDATE users SET role = 'admin' WHERE email LIKE '%';
 
 -- Caso 4: WHERE presente y "selectivo" en apariencia, pero sobre una

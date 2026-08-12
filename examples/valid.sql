@@ -1,9 +1,3 @@
--- ============================================================
--- invalid.sql
--- Sentencias con violaciones claras y múltiples, pensadas para
--- disparar varias reglas de forma evidente (no ambigua).
--- ============================================================
-
 -- SEC-01: DELETE sin WHERE (CRITICAL)
 DELETE FROM users;
 
